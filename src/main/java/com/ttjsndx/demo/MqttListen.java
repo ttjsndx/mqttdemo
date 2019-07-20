@@ -2,15 +2,21 @@ package com.ttjsndx.demo;
 
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+
+@Service
 public class MqttListen {
-    public static void main(String[] args) throws MqttException {
-        String HOST = "tcp://lvzhou-at.h3c.com:1889";
-        String TOPIC = "myla_gou2/#";
+
+    @PostConstruct
+    public void init() {
+        String HOST = "tcp://10.3.3.10:11883";
+        String TOPIC = "iotadmin/#";
         int qos = 1;
         String clientid = "subClient";
-        String userName = "myla_gou2";
-        String passWord = "123456789";
+        String userName = "iotadmin";
+        String passWord = "iotadmin_2018";
         try {
             // host为主机名，test为clientid即连接MQTT的客户端ID，一般以客户端唯一标识符表示，MemoryPersistence设置clientid的保存形式，默认为以内存保存
             MqttClient client = new MqttClient(HOST, clientid, new MemoryPersistence());
@@ -28,14 +34,13 @@ public class MqttListen {
             options.setKeepAliveInterval(20);
             // 设置回调函数
             client.setCallback(new MqttCallback() {
-
+                //四川省成都市锦江区柳江街道榕声路锦馨家园A区
                 public void connectionLost(Throwable cause) {
                     System.out.println("connectionLost");
                 }
 
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
                     System.out.println("topic:"+topic);
-                    System.out.println("Qos:"+message.getQos());
                     System.out.println("message content:"+new String(message.getPayload()));
 
                 }
